@@ -68,8 +68,8 @@
       const totals = computeTotals(scores, players);
       const minTotal = Math.min(...players.map(p => totals[p]));
 
-      const headerCols = players.map(p => `<th>${esc(p)}</th>`).join('');
-      const header = `<tr><th>Round</th><th>Cards</th><th>Wild</th>${headerCols}</tr>`;
+      const headerCols = players.map(p => `<th class="th-player">${esc(p)}</th>`).join('');
+      const thead = `<thead><tr><th class="th-meta">Round</th><th class="th-meta">Cards</th><th class="th-meta">Wild</th>${headerCols}</tr></thead>`;
 
       let rows = '';
       for (let i = 0; i < completedRounds; i++) {
@@ -83,8 +83,9 @@
         return `<td${cls}>${totals[p]}</td>`;
       }).join('');
       const totalsRow = `<tr class="totals-row"><td colspan="3">Total</td>${totalCols}</tr>`;
+      const tbody = `<tbody>${rows}${totalsRow}</tbody>`;
 
-      return `<table>${header}${rows}${totalsRow}</table>`;
+      return `<div class="table-wrapper"><table>${thead}${tbody}</table></div>`;
     }
 
     function renderSetup(error) {
@@ -116,11 +117,14 @@
       const roundMeta = ROUNDS[currentRound - 1];
       const errorHtml = error ? `<p class="error">${esc(error)}</p>` : '';
 
-      const scoreInputs = players.map(p => `
+      const scoreInputs = players.map(p => {
+        const id = `score-${esc(p).replace(/\s+/g, '-').toLowerCase()}`;
+        return `
         <div class="score-input-group">
-          <label>${esc(p)}</label>
-          <input type="number" name="${esc(p)}" min="0" required>
-        </div>`).join('');
+          <label for="${id}">${esc(p)}</label>
+          <input type="number" id="${id}" name="${esc(p)}" min="0" required>
+        </div>`;
+      }).join('');
 
       return `
         <h1>Five Crowns</h1>
