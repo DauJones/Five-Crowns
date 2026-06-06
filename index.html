@@ -85,7 +85,7 @@
       const totalsRow = `<tr class="totals-row"><td colspan="3">Total</td>${totalCols}</tr>`;
       const tbody = `<tbody>${rows}${totalsRow}</tbody>`;
 
-      return `<div class="table-wrapper"><table>${thead}${tbody}</table></div>`;
+      return `<div class="table-wrapper" id="score-table-wrapper"><table>${thead}${tbody}</table></div><button class="btn-pill" id="totals-toggle">Hide totals</button>`;
     }
 
     function renderSetup(error) {
@@ -221,6 +221,14 @@
       document.getElementById('start-form')?.addEventListener('submit', handleStart);
       document.getElementById('round-form')?.addEventListener('submit', handleRound);
       document.querySelectorAll('.reset-btn').forEach(btn => btn.addEventListener('click', handleReset));
+      const totalsToggle = document.getElementById('totals-toggle');
+      if (totalsToggle) {
+        totalsToggle.addEventListener('click', () => {
+          const wrapper = document.getElementById('score-table-wrapper');
+          const hidden = wrapper.classList.toggle('totals-hidden');
+          totalsToggle.textContent = hidden ? 'Show totals' : 'Hide totals';
+        });
+      }
     }
 
     function render() {
