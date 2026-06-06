@@ -304,3 +304,31 @@ tr.totals-row td {
     width: 72px;
   }
 }
+
+/* Totals toggle */
+.totals-hidden .totals-row {
+  display: none;
+}
+
+.btn-pill {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.65rem;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  line-height: 1.4;
+  min-height: unset;
+}
+
+.btn-pill:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
