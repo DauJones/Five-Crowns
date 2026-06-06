@@ -26,6 +26,7 @@
     ];
 
     let pendingError = null;
+    let totalsHidden = false;
 
     // ── Storage ──────────────────────────────────────────────────────────────
 
@@ -224,11 +225,18 @@
       document.querySelectorAll('.reset-btn').forEach(btn => btn.addEventListener('click', handleReset));
       const totalsToggle = document.getElementById('totals-toggle');
       if (totalsToggle) {
+        if (totalsHidden) {
+          const wrapper = document.getElementById('score-table-wrapper');
+          if (wrapper) {
+            wrapper.classList.add('totals-hidden');
+            totalsToggle.textContent = 'Show totals';
+          }
+        }
         totalsToggle.addEventListener('click', () => {
           const wrapper = document.getElementById('score-table-wrapper');
           if (!wrapper) return;
-          const hidden = wrapper.classList.toggle('totals-hidden');
-          totalsToggle.textContent = hidden ? 'Show totals' : 'Hide totals';
+          totalsHidden = wrapper.classList.toggle('totals-hidden');
+          totalsToggle.textContent = totalsHidden ? 'Show totals' : 'Hide totals';
         });
       }
     }
