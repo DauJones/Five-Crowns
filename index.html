@@ -85,7 +85,7 @@
       const totalsRow = `<tr class="totals-row"><td colspan="3">Total</td>${totalCols}</tr>`;
       const tbody = `<tbody>${rows}${totalsRow}</tbody>`;
 
-      return `<div class="table-wrapper" id="score-table-wrapper"><table>${thead}${tbody}</table></div><button class="btn-pill" id="totals-toggle">Hide totals</button>`;
+      return `<div class="table-wrapper" id="score-table-wrapper"><table>${thead}${tbody}</table></div>`;
     }
 
     function renderSetup(error) {
@@ -130,6 +130,7 @@
         <h1>Five Crowns</h1>
         <p class="round-info">Round ${currentRound} of 11 &nbsp;·&nbsp; ${roundMeta.cards} cards &nbsp;·&nbsp; ${roundMeta.wild} are wild</p>
         ${buildScoreTable(game)}
+        <button class="btn-pill" id="totals-toggle">Hide totals</button>
         <div class="score-form">
           <h2>Enter Round ${currentRound} Scores</h2>
           ${errorHtml}
@@ -225,6 +226,7 @@
       if (totalsToggle) {
         totalsToggle.addEventListener('click', () => {
           const wrapper = document.getElementById('score-table-wrapper');
+          if (!wrapper) return;
           const hidden = wrapper.classList.toggle('totals-hidden');
           totalsToggle.textContent = hidden ? 'Show totals' : 'Hide totals';
         });
