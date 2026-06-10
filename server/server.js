@@ -23,6 +23,15 @@ const ROUNDS = [
   { round: 11, cards: 13, wild: 'Kings'  },
 ];
 
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function readGame() {
   try {
     if (!fs.existsSync(GAME_FILE)) return null;
@@ -66,7 +75,7 @@ function buildScoreTable(game) {
 
   const minTotal = Math.min(...players.map(p => totals[p]));
 
-  const headerCols = players.map(p => `<th>${p}</th>`).join('');
+  const headerCols = players.map(p => `<th>${esc(p)}</th>`).join('');
   const header = `<tr><th>Round</th><th>Cards</th><th>Wild</th>${headerCols}</tr>`;
 
   let rows = '';
@@ -86,7 +95,7 @@ function buildScoreTable(game) {
 }
 
 function renderSetup(error) {
-  const errorHtml = error ? `<p class="error">${error}</p>` : '';
+  const errorHtml = error ? `<p class="error">${esc(error)}</p>` : '';
   const inputs = Array.from({ length: 7 }, (_, i) => {
     const n = i + 1;
     const req = n <= 2 ? ' required' : '';
@@ -112,12 +121,12 @@ function renderSetup(error) {
 function renderScoring(game, error) {
   const { currentRound, players } = game;
   const roundMeta = ROUNDS[currentRound - 1];
-  const errorHtml = error ? `<p class="error">${error}</p>` : '';
+  const errorHtml = error ? `<p class="error">${esc(error)}</p>` : '';
 
   const scoreInputs = players.map(p => `
       <div class="score-input-group">
-        <label for="score_${p}">${p}</label>
-        <input id="score_${p}" type="number" name="${p}" min="0" required>
+        <label for="score_${esc(p)}">${esc(p)}</label>
+        <input id="score_${esc(p)}" type="number" name="${esc(p)}" min="0" required>
       </div>`).join('');
 
   return htmlShell(`Five Crowns — Round ${currentRound}`, `
@@ -149,9 +158,9 @@ function renderResults(game) {
 
   let winnerText;
   if (winners.length === 1) {
-    winnerText = `🏆 Winner: ${winners[0]} with ${minTotal} points!`;
+    winnerText = `🏆 Winner: ${esc(winners[0])} with ${minTotal} points!`;
   } else {
-    winnerText = `🏆 Tie: ${winners.join(' & ')} with ${minTotal} points each!`;
+    winnerText = `🏆 Tie: ${winners.map(esc).join(' & ')} with ${minTotal} points each!`;
   }
 
   return htmlShell('Five Crowns — Game Over', `
